@@ -4,7 +4,8 @@ var YSS = {
   // Data only — no remote code is ever executed.
   REMOTE_CONFIG_URL: 'https://raw.githubusercontent.com/anilpekesen/youtube-shorts-auto-scroll/main/remote-config.json',
 
-  BTC_ADDRESS: 'bc1qREPLACE_WITH_YOUR_BTC_ADDRESS',
+  // USDT on the Tron network only — other coins or networks sent here are lost.
+  DONATION: { network: 'USDT · TRC20 (Tron)', address: 'TR1fPfJEQ5MuqX97PbXyZwitmH3zHZGb3X' },
 
   SETTINGS: { enabled: true },
 

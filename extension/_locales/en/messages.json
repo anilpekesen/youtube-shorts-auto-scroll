@@ -6,7 +6,8 @@
   "statusBroken": { "message": "YouTube may have changed its layout. A fix is on the way — the extension will update automatically." },
   "statusUnknown": { "message": "Open a Short to start." },
   "donateTitle": { "message": "Support (optional)" },
-  "donateText": { "message": "This extension is free forever. If you find it useful, you can donate in Bitcoin." },
+  "donateText": { "message": "This extension is free forever. If you find it useful, you can donate in USDT." },
+  "donateWarning": { "message": "Send only USDT on the Tron (TRC20) network. Other coins or networks will be lost." },
   "copy": { "message": "Copy" },
   "copied": { "message": "Copied!" }
 }

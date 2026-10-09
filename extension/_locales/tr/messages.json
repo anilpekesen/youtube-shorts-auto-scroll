@@ -6,7 +6,8 @@
   "statusBroken": { "message": "YouTube sayfa yapısını değiştirmiş olabilir. Düzeltme yolda — eklenti otomatik güncellenecek." },
   "statusUnknown": { "message": "Başlamak için bir Short aç." },
   "donateTitle": { "message": "Destek (isteğe bağlı)" },
-  "donateText": { "message": "Bu eklenti sonsuza dek ücretsiz. Beğendiysen Bitcoin ile bağış yapabilirsin." },
+  "donateText": { "message": "Bu eklenti sonsuza dek ücretsiz. Beğendiysen USDT ile bağış yapabilirsin." },
+  "donateWarning": { "message": "Sadece Tron (TRC20) ağında USDT gönder. Başka coin veya ağ kaybolur." },
   "copy": { "message": "Kopyala" },
   "copied": { "message": "Kopyalandı!" }
 }

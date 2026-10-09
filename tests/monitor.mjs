@@ -52,23 +52,34 @@ try {
     })])
   ), selectors);
 
-  const hasVideo = await page.waitForFunction(list => list.some(s => {
-    const v = document.querySelector(s);
-    return v && v.duration > 0;
-  }), selectors.activeVideo, { timeout: 30000 }).then(() => true, () => false);
-
-  if (!hasVideo) {
+  if (!report.selectors.activeVideo.length) {
     report.url = page.url();
     report.reason = 'video_not_found';
     finish(1);
   }
 
+  // YouTube often refuses playback to datacenter IPs (GitHub runners). The DOM is still testable,
+  // so in that case simulate the end of the video instead of playing to the end.
+  const playable = await page.waitForFunction(list => list.some(s => {
+    const v = document.querySelector(s);
+    return v && v.duration > 0;
+  }), selectors.activeVideo, { timeout: 20000 }).then(() => true, () => false);
+  report.mode = playable ? 'playback' : 'simulated_end';
+  if (!playable) {
+    report.playerError = await page.evaluate(() =>
+      document.querySelector('.ytp-error, #shorts-player .ytp-error-content')?.innerText?.slice(0, 200) || '');
+  }
+
   const before = page.url();
-  await page.evaluate(list => {
+  await page.evaluate(([list, play]) => {
     const v = list.map(s => document.querySelector(s)).find(Boolean);
-    v.currentTime = Math.max(0, v.duration - 1.5);
-    v.play();
-  }, selectors.activeVideo);
+    if (play) {
+      v.currentTime = Math.max(0, v.duration - 1.5);
+      v.play();
+    } else {
+      v.dispatchEvent(new Event('ended'));
+    }
+  }, [selectors.activeVideo, playable]);
 
   const advanced = await page.waitForFunction(u => location.href !== u, before, { timeout: 25000 })
     .then(() => true, () => false);

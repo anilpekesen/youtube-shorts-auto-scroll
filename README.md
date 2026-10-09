@@ -7,10 +7,10 @@ Shorts videosu bitince otomatik olarak sonrakine geçen, ücretsiz Chrome eklent
 ```
 extension/              ← Store'a yüklenen klasör (zip'lenen kısım)
   manifest.json
-  src/defaults.js       ← seçiciler, BTC adresi, uzak config URL'si
+  src/defaults.js       ← seçiciler, USDT bağış adresi, uzak config URL'si
   src/content.js        ← video bitişini algılar, sonrakine geçer, sağlık durumu bildirir
   src/background.js     ← uzak config'i 6 saatte bir çeker, bozulunca ikonda "!" gösterir
-  src/popup.*           ← aç/kapa, durum, BTC bağış
+  src/popup.*           ← aç/kapa, durum, USDT (TRC20) bağış
 remote-config.json      ← GitHub'dan canlı okunan seçiciler (Store incelemesi olmadan düzeltme)
 tests/monitor.mjs       ← gerçek YouTube'da uçtan uca test
 .github/workflows/
@@ -36,9 +36,8 @@ URL değişirse başarılı sayılır; hiçbiri işe yaramazsa sağlık durumu "
 
 ## Kurulum (ilk kez)
 
-1. `extension/src/defaults.js` dosyasında şunları değiştir:
-   - `REMOTE_CONFIG_URL` → `OWNER/REPO` yerine kendi GitHub repo'n (repo **public** olmalı)
-   - `BTC_ADDRESS` → kendi BTC adresin
+1. Repo: https://github.com/anilpekesen/youtube-shorts-auto-scroll (public kalmalı, uzak config buradan okunuyor).
+   Bağış adresi `extension/src/defaults.js` içindeki `DONATION`.
 2. Yerelde dene: `chrome://extensions` → Geliştirici modu → "Paketlenmemiş öğe yükle" → `extension/` klasörü.
 3. Testi çalıştır: `npm install && npx playwright install chromium && npm run monitor`
    (tarayıcıyı görmek için: `npm run monitor:headed`).
@@ -57,7 +56,7 @@ URL değişirse başarılı sayılır; hiçbiri işe yaramazsa sağlık durumu "
    ([nasıl alınır](https://github.com/fregante/chrome-webstore-upload-keys)).
 
 ### Politika notları
-- **BTC bağış:** İsteğe bağlı bağış linki/adresi serbest. Yasak olanlar: kullanıcının cihazında
+- **USDT (TRC20) bağış:** İsteğe bağlı bağış linki/adresi serbest. Yasak olanlar: kullanıcının cihazında
   kripto madencilik yapmak ve bağışı bir özelliğin kilidini açma şartına bağlamak. Bu eklenti ikisini de yapmıyor.
 - **İsim:** "YouTube" kelimesi isimde ilk sırada olmamalı ve YouTube logosu kullanılmamalı. Bu yüzden isim
   "Auto Scroll for YouTube Shorts" ve ikon kendi tasarımımız.

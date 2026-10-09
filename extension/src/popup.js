@@ -8,10 +8,12 @@ for (const el of document.querySelectorAll('[data-i18n]')) {
 const enabledInput = document.getElementById('enabled');
 const statusEl = document.getElementById('status');
 const noticeEl = document.getElementById('notice');
-const btcEl = document.getElementById('btc');
+const networkEl = document.getElementById('network');
+const addressEl = document.getElementById('address');
 const copyBtn = document.getElementById('copy');
 
-btcEl.textContent = YSS.BTC_ADDRESS;
+networkEl.textContent = YSS.DONATION.network;
+addressEl.textContent = YSS.DONATION.address;
 
 chrome.storage.local.get(['settings', 'health', 'notice']).then(({ settings, health, notice }) => {
   enabledInput.checked = settings?.enabled !== false;
@@ -28,7 +30,7 @@ enabledInput.addEventListener('change', async () => {
 });
 
 copyBtn.addEventListener('click', async () => {
-  await navigator.clipboard.writeText(YSS.BTC_ADDRESS);
+  await navigator.clipboard.writeText(YSS.DONATION.address);
   copyBtn.textContent = t('copied');
   setTimeout(() => { copyBtn.textContent = t('copy'); }, 1500);
 });
