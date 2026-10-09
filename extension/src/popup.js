@@ -8,12 +8,16 @@ for (const el of document.querySelectorAll('[data-i18n]')) {
 const enabledInput = document.getElementById('enabled');
 const statusEl = document.getElementById('status');
 const noticeEl = document.getElementById('notice');
-const networkEl = document.getElementById('network');
 const addressEl = document.getElementById('address');
 const copyBtn = document.getElementById('copy');
+const qrToggle = document.getElementById('qr-toggle');
+const qrEl = document.getElementById('qr');
 
-networkEl.textContent = YSS.DONATION.network;
+document.getElementById('coin').textContent = YSS.DONATION.coin;
+document.getElementById('network').textContent = YSS.DONATION.network;
 addressEl.textContent = YSS.DONATION.address;
+copyBtn.title = t('copy');
+copyBtn.setAttribute('aria-label', t('copy'));
 
 chrome.storage.local.get(['settings', 'health', 'notice']).then(({ settings, health, notice }) => {
   enabledInput.checked = settings?.enabled !== false;
@@ -31,16 +35,28 @@ enabledInput.addEventListener('change', async () => {
 
 copyBtn.addEventListener('click', async () => {
   await navigator.clipboard.writeText(YSS.DONATION.address);
-  copyBtn.textContent = t('copied');
-  setTimeout(() => { copyBtn.textContent = t('copy'); }, 1500);
+  copyBtn.classList.add('done');
+  copyBtn.title = t('copied');
+  setTimeout(() => {
+    copyBtn.classList.remove('done');
+    copyBtn.title = t('copy');
+  }, 1500);
+});
+
+qrToggle.addEventListener('click', () => {
+  const open = qrEl.hidden;
+  qrEl.hidden = !open;
+  qrToggle.setAttribute('aria-expanded', String(open));
+  qrToggle.querySelector('span').textContent = t(open ? 'hideQr' : 'showQr');
 });
 
 function renderHealth(health) {
+  const text = statusEl.querySelector('span');
   if (!health) {
-    statusEl.textContent = t('statusUnknown');
+    text.textContent = t('statusUnknown');
     return;
   }
   statusEl.className = 'status ' + (health.ok ? 'ok' : 'bad');
-  statusEl.textContent = health.ok ? t('statusOk') : t('statusBroken');
+  text.textContent = health.ok ? t('statusOk') : t('statusBroken');
   if (!health.ok) chrome.runtime.sendMessage({ type: 'refresh-config' });
 }

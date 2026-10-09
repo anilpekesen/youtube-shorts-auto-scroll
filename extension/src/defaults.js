@@ -5,7 +5,7 @@ var YSS = {
   REMOTE_CONFIG_URL: 'https://raw.githubusercontent.com/anilpekesen/youtube-shorts-auto-scroll/main/remote-config.json',
 
   // USDT on the Tron network only — other coins or networks sent here are lost.
-  DONATION: { network: 'USDT · TRC20 (Tron)', address: 'TR1fPfJEQ5MuqX97PbXyZwitmH3zHZGb3X' },
+  DONATION: { coin: 'USDT', network: 'Tron · TRC20', address: 'TR1fPfJEQ5MuqX97PbXyZwitmH3zHZGb3X' },
 
   SETTINGS: { enabled: true },
 

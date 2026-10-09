@@ -1,13 +1,41 @@
 {
-  "extName": { "message": "Auto Scroll for YouTube Shorts" },
-  "extDescription": { "message": "YouTube Shorts videosu bitince otomatik olarak sonrakine geçer. Ücretsiz, takip yok." },
-  "autoScroll": { "message": "Sonraki Short'a otomatik geç" },
-  "statusOk": { "message": "Normal çalışıyor." },
-  "statusBroken": { "message": "YouTube sayfa yapısını değiştirmiş olabilir. Düzeltme yolda — eklenti otomatik güncellenecek." },
-  "statusUnknown": { "message": "Başlamak için bir Short aç." },
-  "donateTitle": { "message": "Destek (isteğe bağlı)" },
-  "donateText": { "message": "Bu eklenti sonsuza dek ücretsiz. Beğendiysen USDT ile bağış yapabilirsin." },
-  "donateWarning": { "message": "Sadece Tron (TRC20) ağında USDT gönder. Başka coin veya ağ kaybolur." },
-  "copy": { "message": "Kopyala" },
-  "copied": { "message": "Kopyalandı!" }
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts"
+  },
+  "extDescription": {
+    "message": "YouTube Shorts videosu bitince otomatik olarak sonrakine geçer. Ücretsiz, takip yok."
+  },
+  "autoScroll": {
+    "message": "Sonraki Short'a otomatik geç"
+  },
+  "statusOk": {
+    "message": "Normal çalışıyor."
+  },
+  "statusBroken": {
+    "message": "YouTube sayfa yapısını değiştirmiş olabilir. Düzeltme yolda — eklenti otomatik güncellenecek."
+  },
+  "statusUnknown": {
+    "message": "Başlamak için bir Short aç."
+  },
+  "donateTitle": {
+    "message": "Bir kahve ısmarla"
+  },
+  "donateText": {
+    "message": "Bu eklenti sonsuza dek ücretsiz. Beğendiysen USDT ile bağış yapabilirsin."
+  },
+  "donateWarning": {
+    "message": "Sadece Tron (TRC20) ağında USDT gönder — başka coin veya ağ geri alınamaz."
+  },
+  "copy": {
+    "message": "Kopyala"
+  },
+  "copied": {
+    "message": "Kopyalandı!"
+  },
+  "showQr": {
+    "message": "QR kod"
+  },
+  "hideQr": {
+    "message": "QR gizle"
+  }
 }

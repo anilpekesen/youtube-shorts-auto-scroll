@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "icons": "node tools/make-icons.mjs",
+    "qr": "node tools/make-qr.mjs",
     "store-assets": "node tools/store-assets.mjs",
     "monitor": "node tests/monitor.mjs",
     "monitor:headed": "HEADED=1 node tests/monitor.mjs",
-    "zip": "cd extension && zip -r ../extension.zip . -x '.*'"
+    "prezip": "npm run qr",
+    "zip": "rm -f extension.zip && cd extension && zip -r ../extension.zip . -x '.*'"
   },
   "devDependencies": {
-    "playwright": "^1.48.0"
+    "playwright": "^1.48.0",
+    "qrcode": "^1.5.4"
   }
 }

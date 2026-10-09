@@ -1,10 +1,12 @@
 # Chrome Web Store listing
 
-Images in this folder:
-- `screenshot-en-1280x800.png` → English listing screenshot
-- `screenshot-tr-1280x800.png` → Turkish listing screenshot
-- `promo-small-440x280.png` → Small promo tile
+Images in this folder (upload in this order):
+- English listing: `en-1-hero.png`, `en-2-popup.png`, `en-3-features.png`
+- Turkish listing: `tr-1-hero.png`, `tr-2-popup.png`, `tr-3-features.png`
+- Small promo tile (440x280): `promo-small-440x280.png`
 - Store icon (128x128): `../extension/icons/icon128.png`
+
+Regenerate with `npm run store-assets`.
 
 ---
 
@@ -31,7 +33,7 @@ PRIVACY
 This extension collects no data. Your on/off setting is stored locally in your browser.
 
 SUPPORT
-The extension is free forever. If you find it useful, an optional USDT (TRC20) donation address is shown in the popup.
+The extension is free forever. If you find it useful, an optional USDT (TRC20) donation address and QR code are shown in the popup.
 
 Not affiliated with or endorsed by YouTube or Google.
 ```
@@ -58,7 +60,7 @@ GİZLİLİK
 Bu eklenti hiçbir veri toplamaz. Aç/kapa ayarın sadece tarayıcında saklanır.
 
 DESTEK
-Eklenti sonsuza dek ücretsiz. Beğendiysen popup'ta isteğe bağlı bir USDT (TRC20) bağış adresi var.
+Eklenti sonsuza dek ücretsiz. Beğendiysen popup'ta isteğe bağlı bir USDT (TRC20) bağış adresi ve QR kodu var.
 
 YouTube veya Google ile bağlantılı değildir.
 ```

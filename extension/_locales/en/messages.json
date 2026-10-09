@@ -1,13 +1,41 @@
 {
-  "extName": { "message": "Auto Scroll for YouTube Shorts" },
-  "extDescription": { "message": "Automatically scrolls to the next YouTube Short when the current one finishes. Free, no tracking." },
-  "autoScroll": { "message": "Auto scroll to next Short" },
-  "statusOk": { "message": "Working normally." },
-  "statusBroken": { "message": "YouTube may have changed its layout. A fix is on the way — the extension will update automatically." },
-  "statusUnknown": { "message": "Open a Short to start." },
-  "donateTitle": { "message": "Support (optional)" },
-  "donateText": { "message": "This extension is free forever. If you find it useful, you can donate in USDT." },
-  "donateWarning": { "message": "Send only USDT on the Tron (TRC20) network. Other coins or networks will be lost." },
-  "copy": { "message": "Copy" },
-  "copied": { "message": "Copied!" }
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts"
+  },
+  "extDescription": {
+    "message": "Automatically scrolls to the next YouTube Short when the current one finishes. Free, no tracking."
+  },
+  "autoScroll": {
+    "message": "Auto scroll to next Short"
+  },
+  "statusOk": {
+    "message": "Working normally."
+  },
+  "statusBroken": {
+    "message": "YouTube may have changed its layout. A fix is on the way — the extension will update automatically."
+  },
+  "statusUnknown": {
+    "message": "Open a Short to start."
+  },
+  "donateTitle": {
+    "message": "Buy me a coffee"
+  },
+  "donateText": {
+    "message": "This extension is free forever. If you find it useful, you can donate in USDT."
+  },
+  "donateWarning": {
+    "message": "Send only USDT on the Tron (TRC20) network — other coins or networks can’t be recovered."
+  },
+  "copy": {
+    "message": "Copy"
+  },
+  "copied": {
+    "message": "Copied!"
+  },
+  "showQr": {
+    "message": "QR code"
+  },
+  "hideQr": {
+    "message": "Hide QR"
+  }
 }
