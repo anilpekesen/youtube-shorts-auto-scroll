@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "icons": "node tools/make-icons.mjs",
+    "store-assets": "node tools/store-assets.mjs",
     "monitor": "node tests/monitor.mjs",
     "monitor:headed": "HEADED=1 node tests/monitor.mjs",
     "zip": "cd extension && zip -r ../extension.zip . -x '.*'"
