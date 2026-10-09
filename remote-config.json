@@ -1,0 +1,19 @@
+{
+  "notice": "",
+  "selectors": {
+    "activeVideo": [
+      "ytd-reel-video-renderer[is-active] video",
+      "#shorts-player video",
+      "ytd-shorts video"
+    ],
+    "nextButton": [
+      "#navigation-button-down button",
+      "#navigation-button-down ytd-button-renderer button",
+      "ytd-shorts button[aria-label=\"Next video\"]"
+    ],
+    "scrollContainer": [
+      "#shorts-inner-container",
+      "ytd-shorts #shorts-container"
+    ]
+  }
+}

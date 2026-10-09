@@ -1,0 +1,58 @@
+name: YouTube Shorts monitor
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci || npm install
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run monitor
+        id: monitor
+        run: |
+          set +e
+          npm run monitor
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Open issue if broken
+        if: steps.monitor.outputs.code == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create youtube-broke --color d93025 --force
+          existing=$(gh issue list --label youtube-broke --state open --json number --jq 'length')
+          body=$(printf 'Otomatik izleme testi başarısız oldu. YouTube Shorts yapısı değişmiş olabilir.\n\n```json\n%s\n```\n\nRun: %s' \
+            "$(cat monitor-report.json)" "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}")
+          if [ "$existing" = "0" ]; then
+            gh issue create --title "⚠️ YouTube Shorts değişti — auto scroll bozuk" --label youtube-broke --body "$body"
+          else
+            num=$(gh issue list --label youtube-broke --state open --json number --jq '.[0].number')
+            gh issue comment "$num" --body "$body"
+          fi
+          exit 1
+
+      - name: Close issue if fixed
+        if: steps.monitor.outputs.code == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for n in $(gh issue list --label youtube-broke --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "İzleme testi tekrar geçiyor ✅"
+          done
+
+      - name: Inconclusive
+        if: steps.monitor.outputs.code == '2'
+        run: echo "::warning::YouTube bot kontrolü veya ağ hatası — sonuç belirsiz, issue açılmadı."
