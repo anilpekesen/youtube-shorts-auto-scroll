@@ -2,6 +2,8 @@
 
 Shorts videosu bitince otomatik olarak sonrakine geçen, ücretsiz Chrome eklentisi (Manifest V3).
 
+**[Chrome Web Store'dan kur](https://chromewebstore.google.com/detail/auto-scroll-for-youtube-s/cdjmnadedkcjiepgplkaikbnegaiemon)** · Extension ID: `cdjmnadedkcjiepgplkaikbnegaiemon`
+
 ## Yapı
 
 ```
