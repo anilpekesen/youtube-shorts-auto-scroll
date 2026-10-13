@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const extDir = fileURLToPath(new URL('../extension', import.meta.url));
 const remoteConfig = JSON.parse(readFileSync(new URL('../remote-config.json', import.meta.url), 'utf8'));
 const YSS = new Function(readFileSync(`${extDir}/src/defaults.js`, 'utf8') + '; return YSS;')();
-const selectors = { ...YSS.SELECTORS, ...remoteConfig.selectors };
+const selectors = { ...YSS.SITES.youtube.selectors, ...(remoteConfig.sites?.youtube?.selectors ?? remoteConfig.selectors) };
 
 const report = { ok: false, reason: '', url: '', selectors: {} };
 

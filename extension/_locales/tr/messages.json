@@ -1,21 +1,24 @@
 {
   "extName": {
-    "message": "Auto Scroll for YouTube Shorts"
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
   },
   "extDescription": {
-    "message": "YouTube Shorts videosu bitince otomatik olarak sonrakine geçer. Ücretsiz, takip yok."
+    "message": "YouTube Shorts, Instagram Reels veya TikTok videosu bitince otomatik olarak sonrakine geçer. Ücretsiz, takip yok."
   },
   "autoScroll": {
-    "message": "Sonraki Short'a otomatik geç"
+    "message": "Sonraki videoya otomatik geç"
   },
   "statusOk": {
-    "message": "Normal çalışıyor."
+    "message": "Çalışıyor"
   },
   "statusBroken": {
-    "message": "YouTube sayfa yapısını değiştirmiş olabilir. Düzeltme yolda — eklenti otomatik güncellenecek."
+    "message": "Sayfa yapısı değişmiş — düzeltme yolda"
   },
   "statusUnknown": {
-    "message": "Başlamak için bir Short aç."
+    "message": "Başlamak için bir video aç"
   },
   "donateTitle": {
     "message": "Bir kahve ısmarla"

@@ -15,5 +15,50 @@
       "#shorts-inner-container",
       "ytd-shorts #shorts-container"
     ]
+  },
+  "sites": {
+    "youtube": {
+      "selectors": {
+        "activeVideo": [
+          "ytd-reel-video-renderer[is-active] video",
+          "#shorts-player video",
+          "ytd-shorts video"
+        ],
+        "nextButton": [
+          "#navigation-button-down button",
+          "#navigation-button-down ytd-button-renderer button",
+          "ytd-shorts button[aria-label=\"Next video\"]"
+        ],
+        "scrollContainer": [
+          "#shorts-inner-container",
+          "ytd-shorts #shorts-container"
+        ]
+      }
+    },
+    "tiktok": {
+      "selectors": {
+        "activeVideo": [
+          "article[data-e2e=\"recommend-list-item-container\"] video",
+          "[data-e2e=\"feed-video\"] video"
+        ],
+        "nextButton": [
+          "button[data-e2e=\"feed-navigation-next\"]"
+        ],
+        "scrollContainer": [
+          "#column-list-container"
+        ]
+      }
+    },
+    "instagram": {
+      "selectors": {
+        "activeVideo": [
+          "main video"
+        ],
+        "nextButton": [
+          "main div[aria-label]:has(> div[role=\"button\"][aria-label] + div[role=\"button\"][aria-label]:last-child) > div[role=\"button\"]:last-child"
+        ],
+        "scrollContainer": []
+      }
+    }
   }
 }

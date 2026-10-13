@@ -13,37 +13,37 @@ const icon = `data:image/png;base64,${readFileSync(`${extDir}/icons/icon128.png`
 
 const COPY = {
   en: {
-    brand: 'Auto Scroll for YouTube Shorts',
-    s1Title: 'Shorts that<br>scroll themselves.',
-    s1Text: 'When a Short ends, the next one starts. No swiping, no arrow keys.',
-    s1Points: ['Hands-free watching', 'Works on youtube.com/shorts', 'Free forever'],
+    brand: 'Auto Scroll for YouTube Shorts, Instagram Reels & TikTok',
+    s1Title: 'Short videos that<br>scroll themselves.',
+    s1Text: 'When a video ends, the next one starts. No swiping, no arrow keys.',
+    s1Points: ['YouTube Shorts', 'Instagram Reels', 'TikTok'],
     ended: 'Video ended',
-    next: 'Next Short',
-    s2Title: 'One switch.<br>That’s all.',
-    s2Text: 'Turn auto scroll on or off from the toolbar whenever you like. A status line tells you everything is working.',
+    next: 'Next video',
+    s2Title: 'Simple switches.<br>That’s all.',
+    s2Text: 'Turn auto scroll on or off for each site from the toolbar. A status line tells you everything is working.',
     s3Title: 'Free. Private.<br>Self-healing.',
-    s3Text: 'No ads, no account, no data collection — and it fixes itself when YouTube changes.',
+    s3Text: 'No ads, no account, no data collection — and it fixes itself when a site changes its layout.',
     cards: [
       ['shield', 'No tracking', 'Nothing leaves your browser. No account, no ads, no analytics.'],
-      ['refresh', 'Keeps working', 'When YouTube changes its layout, fixes arrive automatically.'],
-      ['zap', 'Lightweight', 'Runs only on youtube.com. Tiny, fast and quiet.']
+      ['refresh', 'Keeps working', 'When a site changes its layout, fixes arrive automatically.'],
+      ['zap', 'Lightweight', 'Runs only on YouTube, Instagram and TikTok. Tiny, fast and quiet.']
     ]
   },
   tr: {
-    brand: 'Auto Scroll for YouTube Shorts',
-    s1Title: 'Kendi kendine<br>kayan Shorts.',
-    s1Text: 'Short bitince sıradaki başlar. Kaydırmak yok, tuşa basmak yok.',
-    s1Points: ['Elini sürmeden izle', 'youtube.com/shorts’ta çalışır', 'Sonsuza dek ücretsiz'],
+    brand: 'Auto Scroll for YouTube Shorts, Instagram Reels & TikTok',
+    s1Title: 'Kendi kendine<br>kayan videolar.',
+    s1Text: 'Video bitince sıradaki başlar. Kaydırmak yok, tuşa basmak yok.',
+    s1Points: ['YouTube Shorts', 'Instagram Reels', 'TikTok'],
     ended: 'Video bitti',
-    next: 'Sıradaki Short',
-    s2Title: 'Tek düğme.<br>Hepsi bu.',
-    s2Text: 'Otomatik geçişi araç çubuğundan istediğin an aç ya da kapat. Durum satırı her şeyin çalıştığını gösterir.',
+    next: 'Sıradaki video',
+    s2Title: 'Basit düğmeler.<br>Hepsi bu.',
+    s2Text: 'Otomatik geçişi her site için araç çubuğundan ayrı ayrı aç ya da kapat. Durum satırı her şeyin çalıştığını gösterir.',
     s3Title: 'Ücretsiz. Gizli.<br>Kendini onaran.',
-    s3Text: 'Reklam yok, hesap yok, veri toplama yok. YouTube değişince kendini düzeltir.',
+    s3Text: 'Reklam yok, hesap yok, veri toplama yok. Bir site tasarımını değiştirince kendini düzeltir.',
     cards: [
       ['shield', 'Takip yok', 'Hiçbir veri tarayıcından çıkmaz. Hesap yok, reklam yok, analiz yok.'],
-      ['refresh', 'Hep çalışır', 'YouTube tasarımını değiştirince düzeltme otomatik gelir.'],
-      ['zap', 'Hafif', 'Sadece youtube.com’da çalışır. Küçük, hızlı, sessiz.']
+      ['refresh', 'Hep çalışır', 'Bir site tasarımını değiştirince düzeltme otomatik gelir.'],
+      ['zap', 'Hafif', 'Sadece YouTube, Instagram ve TikTok’ta çalışır. Küçük, hızlı, sessiz.']
     ]
   }
 };
@@ -149,8 +149,8 @@ function screen1(c) {
 function screen2(c, popup) {
   return `<style>${BASE_CSS}
     .copy { width: 520px; }
-    .popup-wrap { position: absolute; right: 120px; top: 50%; transform: translateY(-50%); }
-    .popup-wrap > img { display: block; width: 450px; border-radius: 22px;
+    .popup-wrap { position: absolute; right: 140px; top: 50%; transform: translateY(-45%); }
+    .popup-wrap > img { display: block; width: 400px; border-radius: 22px;
       box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 50px 120px rgba(0,0,0,.6), 0 0 140px rgba(124,92,255,.4); }
     .pin { position: absolute; top: -64px; right: 24px; display: flex; align-items: center; gap: 10px;
            padding: 10px 14px; border-radius: 14px; background: #2a2150; border: 1px solid rgba(255,255,255,.12); }
@@ -199,7 +199,7 @@ function promoTile() {
     h1 { font-size: 30px; margin: 0; line-height: 1.08; letter-spacing: -0.02em; }
     p { margin: 8px 0 0; font-size: 15px; color: rgba(255,255,255,.72); font-weight: 600; }
   </style>
-  <div class="wrap"><img src="${icon}"><div><h1>Auto Scroll<br><em>for Shorts</em></h1><p>Hands-free YouTube Shorts</p></div></div>`;
+  <div class="wrap"><img src="${icon}"><div><h1>Auto Scroll<br><em>for short videos</em></h1><p>Shorts · Reels · TikTok</p></div></div>`;
 }
 
 const context = await chromium.launchPersistentContext('', {
@@ -210,7 +210,9 @@ const context = await chromium.launchPersistentContext('', {
 });
 const worker = context.serviceWorkers()[0] ?? await context.waitForEvent('serviceworker');
 const extId = new URL(worker.url()).host;
-await worker.evaluate(() => chrome.storage.local.set({ health: { ok: true, reason: '', at: Date.now() } }));
+await worker.evaluate(ids => chrome.storage.local.set({
+  health: Object.fromEntries(ids.map(id => [id, { ok: true, reason: '', at: Date.now() }]))
+}), ['youtube', 'tiktok', 'instagram']);
 
 async function renderPopup(lang) {
   const page = await context.newPage();
@@ -221,9 +223,10 @@ async function renderPopup(lang) {
   const messages = JSON.parse(readFileSync(`${extDir}/_locales/${lang}/messages.json`, 'utf8'));
   await page.evaluate(msgs => {
     for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = msgs[el.dataset.i18n]?.message ?? el.textContent;
-    const status = document.getElementById('status');
-    status.className = 'status ok';
-    status.querySelector('span').textContent = msgs.statusOk.message;
+    for (const status of document.querySelectorAll('.status')) {
+      status.className = 'status ok';
+      status.querySelector('span').textContent = msgs.statusOk.message;
+    }
     document.body.style.zoom = 1.5; // crisp when shown large
   }, messages);
   const shot = (await page.locator('body').screenshot()).toString('base64');

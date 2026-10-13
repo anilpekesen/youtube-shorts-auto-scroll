@@ -18,24 +18,25 @@ Regenerate with `npm run store-assets`.
 **Description:**
 
 ```
-Watch YouTube Shorts hands-free.
+Watch YouTube Shorts, Instagram Reels and TikTok hands-free.
 
-When a Short finishes, Auto Scroll for YouTube Shorts moves to the next one automatically — no more swiping or pressing the arrow key after every video.
+When a video finishes, Auto Scroll moves to the next one automatically — no more swiping or pressing the arrow key after every video.
 
 FEATURES
-• Auto-advances to the next Short when the current one ends
-• One-click on/off from the toolbar
-• Works with YouTube's current layout and keeps working when it changes — fixes are delivered automatically
-• Lightweight: runs only on youtube.com
+• Auto-advances to the next video when the current one ends
+• Works on YouTube Shorts, Instagram Reels and the TikTok feed
+• Turn it on or off separately for each site from the toolbar
+• Keeps working when a site changes its layout — fixes are delivered automatically
+• Lightweight: runs only on youtube.com, instagram.com and tiktok.com
 • 100% free, no ads, no tracking, no account
 
 PRIVACY
-This extension collects no data. Your on/off setting is stored locally in your browser.
+This extension collects no data. Your on/off settings are stored locally in your browser.
 
 SUPPORT
 The extension is free forever. If you find it useful, an optional USDT (TRC20) donation address and QR code are shown in the popup.
 
-Not affiliated with or endorsed by YouTube or Google.
+Not affiliated with or endorsed by YouTube, Google, Instagram, Meta or TikTok.
 ```
 
 ---
@@ -45,24 +46,25 @@ Not affiliated with or endorsed by YouTube or Google.
 **Açıklama:**
 
 ```
-YouTube Shorts'u elini sürmeden izle.
+YouTube Shorts, Instagram Reels ve TikTok'u elini sürmeden izle.
 
-Bir Short bittiğinde Auto Scroll for YouTube Shorts otomatik olarak sonrakine geçer — her videodan sonra kaydırmana ya da ok tuşuna basmana gerek kalmaz.
+Bir video bittiğinde Auto Scroll otomatik olarak sonrakine geçer — her videodan sonra kaydırmana ya da ok tuşuna basmana gerek kalmaz.
 
 ÖZELLİKLER
-• Short bitince otomatik olarak sonrakine geçer
-• Araç çubuğundan tek tıkla aç/kapat
-• YouTube'un mevcut tasarımıyla çalışır, YouTube değişse bile çalışmaya devam eder — düzeltmeler otomatik gelir
-• Hafif: sadece youtube.com'da çalışır
+• Video bitince otomatik olarak sonrakine geçer
+• YouTube Shorts, Instagram Reels ve TikTok akışında çalışır
+• Her site için araç çubuğundan ayrı ayrı aç/kapat
+• Bir site tasarımını değiştirse bile çalışmaya devam eder — düzeltmeler otomatik gelir
+• Hafif: sadece youtube.com, instagram.com ve tiktok.com'da çalışır
 • Tamamen ücretsiz, reklam yok, takip yok, hesap yok
 
 GİZLİLİK
-Bu eklenti hiçbir veri toplamaz. Aç/kapa ayarın sadece tarayıcında saklanır.
+Bu eklenti hiçbir veri toplamaz. Aç/kapa ayarların sadece tarayıcında saklanır.
 
 DESTEK
 Eklenti sonsuza dek ücretsiz. Beğendiysen popup'ta isteğe bağlı bir USDT (TRC20) bağış adresi ve QR kodu var.
 
-YouTube veya Google ile bağlantılı değildir.
+YouTube, Google, Instagram, Meta veya TikTok ile bağlantılı değildir.
 ```
 
 ---
@@ -71,17 +73,17 @@ YouTube veya Google ile bağlantılı değildir.
 
 **Single purpose:**
 ```
-Automatically scrolls to the next YouTube Short when the current one finishes.
+Automatically scrolls to the next short video (YouTube Shorts, Instagram Reels, TikTok) when the current one finishes.
 ```
 
 **Permission justifications:**
 
 | Permission | Justification |
 |---|---|
-| `storage` | Stores the user's on/off setting and the extension's health status locally. |
-| `alarms` | Periodically refreshes the selector configuration so the extension keeps working when YouTube changes its page layout. |
+| `storage` | Stores the user's per-site on/off settings and the extension's health status locally. |
+| `alarms` | Periodically refreshes the selector configuration so the extension keeps working when a supported site changes its page layout. |
 | Host `raw.githubusercontent.com` | Downloads a public JSON file containing only CSS selectors (no code) from the extension's GitHub repository. |
-| Content script on `youtube.com` | Detects when a Short finishes and moves to the next one. |
+| Content script on `youtube.com`, `instagram.com`, `tiktok.com` | Detects when a Short, Reel or TikTok video finishes and moves to the next one. Only active on the Shorts, Reels and TikTok feed pages. |
 
 **Remote code:** No, I am not using remote code.
 (The remote file is JSON data with CSS selectors only; no JavaScript is fetched or executed.)

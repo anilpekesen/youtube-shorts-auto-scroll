@@ -5,8 +5,8 @@ for (const el of document.querySelectorAll('[data-i18n]')) {
   el.textContent = t(el.dataset.i18n);
 }
 
-const enabledInput = document.getElementById('enabled');
-const statusEl = document.getElementById('status');
+const sitesEl = document.getElementById('sites');
+const rowTemplate = document.getElementById('site-row');
 const noticeEl = document.getElementById('notice');
 const addressEl = document.getElementById('address');
 const copyBtn = document.getElementById('copy');
@@ -20,18 +20,34 @@ copyBtn.title = t('copy');
 copyBtn.setAttribute('aria-label', t('copy'));
 
 chrome.storage.local.get(['settings', 'health', 'notice']).then(({ settings, health, notice }) => {
-  enabledInput.checked = settings?.enabled !== false;
-  renderHealth(health);
+  for (const [id, site] of Object.entries(YSS.SITES)) {
+    sitesEl.append(renderSite(id, site, settings?.sites?.[id] !== false, health?.[id]));
+  }
+  if (Object.values(health || {}).some(h => !h.ok)) chrome.runtime.sendMessage({ type: 'refresh-config' });
   if (notice) {
     noticeEl.textContent = notice;
     noticeEl.hidden = false;
   }
 });
 
-enabledInput.addEventListener('change', async () => {
+function renderSite(id, site, enabled, health) {
+  const row = rowTemplate.content.firstElementChild.cloneNode(true);
+  const input = row.querySelector('input');
+  const status = row.querySelector('.status');
+  row.querySelector('strong').textContent = site.name;
+  input.checked = enabled;
+  input.addEventListener('change', () => setSiteEnabled(id, input.checked));
+  if (health) status.classList.add(health.ok ? 'ok' : 'bad');
+  status.querySelector('span').textContent =
+    !health ? t('statusUnknown') : health.ok ? t('statusOk') : t('statusBroken');
+  return row;
+}
+
+async function setSiteEnabled(id, on) {
   const { settings } = await chrome.storage.local.get('settings');
-  await chrome.storage.local.set({ settings: { ...YSS.SETTINGS, ...settings, enabled: enabledInput.checked } });
-});
+  const sites = { ...YSS.SETTINGS.sites, ...settings?.sites, [id]: on };
+  await chrome.storage.local.set({ settings: { ...settings, sites } });
+}
 
 copyBtn.addEventListener('click', async () => {
   await navigator.clipboard.writeText(YSS.DONATION.address);
@@ -49,14 +65,3 @@ qrToggle.addEventListener('click', () => {
   qrToggle.setAttribute('aria-expanded', String(open));
   qrToggle.querySelector('span').textContent = t(open ? 'hideQr' : 'showQr');
 });
-
-function renderHealth(health) {
-  const text = statusEl.querySelector('span');
-  if (!health) {
-    text.textContent = t('statusUnknown');
-    return;
-  }
-  statusEl.className = 'status ' + (health.ok ? 'ok' : 'bad');
-  text.textContent = health.ok ? t('statusOk') : t('statusBroken');
-  if (!health.ok) chrome.runtime.sendMessage({ type: 'refresh-config' });
-}

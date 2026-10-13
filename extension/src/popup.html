@@ -7,16 +7,25 @@
 <body>
   <header>
     <img src="../icons/icon32.png" alt="" width="28" height="28">
-    <h1 data-i18n="extName"></h1>
+    <h1 data-i18n="popupTitle"></h1>
   </header>
 
-  <section class="card">
-    <label class="switch-row">
-      <span data-i18n="autoScroll"></span>
-      <input type="checkbox" id="enabled" class="switch">
-    </label>
-    <div id="status" class="status"><i></i><span></span></div>
+  <section class="card sites">
+    <h2 data-i18n="autoScroll"></h2>
+    <ul id="sites"></ul>
   </section>
+
+  <template id="site-row">
+    <li>
+      <label class="switch-row">
+        <span class="site">
+          <strong></strong>
+          <span class="status"><i></i><span></span></span>
+        </span>
+        <input type="checkbox" class="switch">
+      </label>
+    </li>
+  </template>
 
   <div id="notice" class="notice" hidden></div>
 

@@ -1,21 +1,24 @@
 {
   "extName": {
-    "message": "Auto Scroll for YouTube Shorts"
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
   },
   "extDescription": {
-    "message": "Automatically scrolls to the next YouTube Short when the current one finishes. Free, no tracking."
+    "message": "Automatically moves to the next YouTube Short, Instagram Reel or TikTok when the current one finishes. Free, no tracking."
   },
   "autoScroll": {
-    "message": "Auto scroll to next Short"
+    "message": "Auto scroll to the next video"
   },
   "statusOk": {
-    "message": "Working normally."
+    "message": "Working"
   },
   "statusBroken": {
-    "message": "YouTube may have changed its layout. A fix is on the way — the extension will update automatically."
+    "message": "Layout changed — a fix is on the way"
   },
   "statusUnknown": {
-    "message": "Open a Short to start."
+    "message": "Open a video to start"
   },
   "donateTitle": {
     "message": "Buy me a coffee"

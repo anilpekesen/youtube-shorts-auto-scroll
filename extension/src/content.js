@@ -4,31 +4,36 @@
   const ADVANCE_TIMEOUT_MS = 2500;
   const VIDEO_MISSING_MS = 10000;
 
-  let selectors = YSS.SELECTORS;
-  let enabled = YSS.SETTINGS.enabled;
+  const siteId = Object.keys(YSS.SITES).find(id => YSS.SITES[id].hosts.includes(location.hostname));
+  if (!siteId) return;
+  const site = YSS.SITES[siteId];
+  const pathRe = new RegExp(site.path);
+
+  let selectors = site.selectors;
+  let enabled = YSS.SETTINGS.sites[siteId];
 
   let video = null;
   let lastTime = 0;
   let watchedUrl = '';
   let advancing = false;
-  let shortsSince = 0;
+  let activeSince = 0;
   let lastHealth = null;
 
-  chrome.storage.local.get(['settings', 'remoteSelectors']).then(applyStorage);
+  chrome.storage.local.get(['settings', 'remoteSites']).then(applyStorage);
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
     applyStorage({
       settings: changes.settings?.newValue,
-      remoteSelectors: changes.remoteSelectors?.newValue
+      remoteSites: changes.remoteSites?.newValue
     });
   });
 
-  function applyStorage({ settings, remoteSelectors }) {
-    if (settings) enabled = settings.enabled !== false;
-    if (remoteSelectors) selectors = { ...YSS.SELECTORS, ...remoteSelectors };
+  function applyStorage({ settings, remoteSites }) {
+    if (settings) enabled = settings.sites?.[siteId] !== false;
+    if (remoteSites) selectors = { ...site.selectors, ...remoteSites[siteId] };
   }
 
-  const isShorts = () => location.pathname.startsWith('/shorts/');
+  const isActivePage = () => pathRe.test(location.pathname);
 
   function query(list) {
     for (const sel of list) {
@@ -40,11 +45,43 @@
     return null;
   }
 
+  function visibleArea(el) {
+    const r = el.getBoundingClientRect();
+    const w = Math.min(r.right, innerWidth) - Math.max(r.left, 0);
+    const h = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0);
+    return w > 0 && h > 0 ? w * h : 0;
+  }
+
+  // Feeds keep neighbouring videos in the DOM, so the most visible match is the one being watched.
+  function findVideo() {
+    for (const sel of selectors.activeVideo) {
+      let best = null;
+      let bestArea = 0;
+      try {
+        for (const el of document.querySelectorAll(sel)) {
+          const area = visibleArea(el);
+          if (area > bestArea) [best, bestArea] = [el, area];
+        }
+      } catch { /* invalid selector from remote config */ }
+      if (best) return best;
+    }
+    return null;
+  }
+
+  function scrollContainer() {
+    const box = query(selectors.scrollContainer);
+    if (box) return box;
+    for (let el = video?.parentElement; el; el = el.parentElement) {
+      if (el.scrollHeight > el.clientHeight + 10 && /(auto|scroll)/.test(getComputedStyle(el).overflowY)) return el;
+    }
+    return null;
+  }
+
   function report(ok, reason = '') {
     if (ok === lastHealth) return;
     lastHealth = ok;
     try {
-      chrome.runtime.sendMessage({ type: 'health', ok, reason }).catch(() => {});
+      chrome.runtime.sendMessage({ type: 'health', site: siteId, ok, reason }).catch(() => {});
     } catch { /* extension reloaded; this script is orphaned */ }
   }
 
@@ -53,7 +90,7 @@
     watchedUrl = location.href;
   }
 
-  // Shorts loop instead of ending, so a jump from the last second back to the start counts as "finished".
+  // Videos loop instead of ending, so a jump from the last second back to the start counts as "finished".
   function onTimeUpdate() {
     const t = video.currentTime;
     const d = video.duration;
@@ -87,11 +124,22 @@
     video = null;
   }
 
-  function waitForUrlChange(from, timeout) {
+  // TikTok swaps videos without changing the URL, so a different active video also counts as moved on.
+  function position() {
+    const v = findVideo();
+    return { href: location.href, video: v, src: v?.currentSrc };
+  }
+
+  function hasMoved(from) {
+    const now = position();
+    return now.href !== from.href || (now.video && (now.video !== from.video || now.src !== from.src));
+  }
+
+  function waitForMove(from, timeout) {
     return new Promise(resolve => {
       const started = Date.now();
       const timer = setInterval(() => {
-        if (location.href !== from) {
+        if (hasMoved(from)) {
           clearInterval(timer);
           resolve(true);
         } else if (Date.now() - started > timeout) {
@@ -115,21 +163,22 @@
       }));
       return true;
     },
+    // Instant rather than smooth: smooth scrolling stalls when the tab is in the background.
     () => {
-      const box = query(selectors.scrollContainer);
+      const box = scrollContainer();
       if (!box) return false;
-      box.scrollBy({ top: box.clientHeight, behavior: 'smooth' });
+      box.scrollBy({ top: box.clientHeight, behavior: 'instant' });
       return true;
     }
   ];
 
   async function advance() {
     advancing = true;
-    const from = location.href;
+    const from = position();
     try {
       for (const run of strategies) {
         if (!run()) continue;
-        if (await waitForUrlChange(from, ADVANCE_TIMEOUT_MS)) {
+        if (await waitForMove(from, ADVANCE_TIMEOUT_MS)) {
           report(true);
           return;
         }
@@ -142,19 +191,19 @@
   }
 
   setInterval(() => {
-    if (!isShorts()) {
+    if (!isActivePage()) {
       detach();
-      shortsSince = 0;
+      activeSince = 0;
       return;
     }
-    if (!shortsSince) shortsSince = Date.now();
+    if (!activeSince) activeSince = Date.now();
 
-    const v = query(selectors.activeVideo);
+    const v = findVideo();
     if (v !== video) {
       detach();
       if (v) attach(v);
     }
-    if (!v && Date.now() - shortsSince > VIDEO_MISSING_MS) {
+    if (!v && Date.now() - activeSince > VIDEO_MISSING_MS) {
       report(false, 'video_not_found');
     }
   }, POLL_MS);

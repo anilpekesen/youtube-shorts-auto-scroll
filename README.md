@@ -1,6 +1,6 @@
-# Auto Scroll for YouTube Shorts
+# Auto Scroll for YouTube Shorts, Instagram Reels & TikTok
 
-Shorts videosu bitince otomatik olarak sonrakine geçen, ücretsiz Chrome eklentisi (Manifest V3).
+YouTube Shorts, Instagram Reels veya TikTok videosu bitince otomatik olarak sonrakine geçen, ücretsiz Chrome eklentisi (Manifest V3).
 
 **[Chrome Web Store'dan kur](https://chromewebstore.google.com/detail/auto-scroll-for-youtube-s/cdjmnadedkcjiepgplkaikbnegaiemon)** · Extension ID: `cdjmnadedkcjiepgplkaikbnegaiemon`
 
@@ -9,12 +9,12 @@ Shorts videosu bitince otomatik olarak sonrakine geçen, ücretsiz Chrome eklent
 ```
 extension/              ← Store'a yüklenen klasör (zip'lenen kısım)
   manifest.json
-  src/defaults.js       ← seçiciler, USDT bağış adresi, uzak config URL'si
+  src/defaults.js       ← site tanımları + seçiciler, USDT bağış adresi, uzak config URL'si
   src/content.js        ← video bitişini algılar, sonrakine geçer, sağlık durumu bildirir
   src/background.js     ← uzak config'i 6 saatte bir çeker, bozulunca ikonda "!" gösterir
-  src/popup.*           ← aç/kapa, durum, USDT (TRC20) bağış
+  src/popup.*           ← site başına aç/kapa ve durum, USDT (TRC20) bağış
 remote-config.json      ← GitHub'dan canlı okunan seçiciler (Store incelemesi olmadan düzeltme)
-tests/monitor.mjs       ← gerçek YouTube'da uçtan uca test
+tests/monitor.mjs       ← gerçek YouTube'da uçtan uca test (TikTok/Instagram CI'da test edilmiyor, bkz. aşağı)
 .github/workflows/
   monitor.yml           ← 6 saatte bir test; bozulursa issue açar (GitHub e-posta atar)
   release.yml           ← v* tag'i push'layınca Chrome Web Store'a yükler
@@ -22,19 +22,31 @@ tests/monitor.mjs       ← gerçek YouTube'da uçtan uca test
 
 ## Nasıl çalışır
 
-Shorts videoları bitmez, başa sarar. Eklenti videonun son saniyesinden başa atladığı anı (ya da `ended`
-olayını) yakalar ve sırayla şunları dener: **"Sonraki" butonu → ArrowDown tuşu → container scroll**.
-URL değişirse başarılı sayılır; hiçbiri işe yaramazsa sağlık durumu "bozuk" olur.
+Her site `defaults.js` içindeki `SITES` altında tanımlı: hangi host'larda ve hangi sayfalarda (`path`)
+çalışacağı, ve aktif video / sonraki butonu / scroll container seçicileri.
 
-## YouTube değişince ne olur?
+| Site | Sayfa | Not |
+|---|---|---|
+| YouTube Shorts | `/shorts/…` | Her video yeni URL |
+| TikTok | `/`, `/foryou`, `/following`, `/friends` | URL değişmez; aktif video elementi değişir |
+| Instagram Reels | `/reels/…` | Buton etiketleri dile göre değiştiği için "sonraki" butonu yapıdan bulunur |
 
-1. **Kullanıcı tarafı:** ikonda kırmızı `!`, popup'ta "YouTube değişmiş olabilir" mesajı.
+Videolar bitince ya `ended` olayı gelir ya da başa sarar. Eklenti ikisini de yakalar ve sırayla şunları dener:
+**"Sonraki" butonu → ArrowDown tuşu → container scroll** (container seçici yoksa videonun kaydırılabilir üst elementi).
+URL ya da ekrandaki aktif video değişirse başarılı sayılır; hiçbiri işe yaramazsa o sitenin sağlık durumu "bozuk" olur.
+
+## Bir site değişince ne olur?
+
+1. **Kullanıcı tarafı:** ikonda kırmızı `!`, popup'ta ilgili sitenin satırında "Sayfa yapısı değişmiş" mesajı.
 2. **Senin tarafın:** `monitor.yml` 6 saatte bir gerçek YouTube'u açıp test eder. Bozulursa
    `youtube-broke` etiketli bir issue açar → GitHub sana e-posta/bildirim gönderir. Düzelince issue'yu kendisi kapatır.
-3. **Hızlı düzeltme (çoğu durumda):** `remote-config.json` içindeki seçicileri güncelle ve push'la.
+   TikTok ve Instagram için otomatik izleme yok (Instagram giriş istiyor, TikTok GitHub sunucularını sık engelliyor);
+   bunlar için sinyal kullanıcı yorumları ve popup'taki durum.
+3. **Hızlı düzeltme (çoğu durumda):** `remote-config.json` içinde `sites.<site>.selectors` altındaki seçicileri güncelle ve push'la.
+   Üstteki `selectors` anahtarı v1.0 kurulumları için (sadece YouTube); YouTube seçicisini değiştirirsen ikisini de güncelle.
    Kullanıcılar 6 saat içinde (ya da popup açılınca) yeni seçicileri alır, Store incelemesine gerek kalmaz.
 4. **Kod değişikliği gerekiyorsa:** `manifest.json` içindeki `version`'ı artır,
-   `git tag v1.0.1 && git push --tags` → Store'a otomatik yüklenir, Chrome kullanıcıları otomatik günceller.
+   `git tag v1.1.1 && git push --tags` → Store'a otomatik yüklenir, Chrome kullanıcıları otomatik günceller.
 
 ## Kurulum (ilk kez)
 
@@ -53,6 +65,7 @@ URL değişirse başarılı sayılır; hiçbiri işe yaramazsa sağlık durumu "
    - `storage`: aç/kapa ayarını saklamak
    - `alarms`: seçici config'ini periyodik yenilemek
    - `raw.githubusercontent.com`: seçici config'ini (sadece veri, kod değil) indirmek
+   - youtube.com / instagram.com / tiktok.com içerik script'i: video bitişini algılayıp sonrakine geçmek
 4. İlk yayından sonra otomatik yayın için GitHub repo secrets ekle:
    `CWS_EXTENSION_ID`, `CWS_CLIENT_ID`, `CWS_CLIENT_SECRET`, `CWS_REFRESH_TOKEN`
    ([nasıl alınır](https://github.com/fregante/chrome-webstore-upload-keys)).
@@ -60,7 +73,9 @@ URL değişirse başarılı sayılır; hiçbiri işe yaramazsa sağlık durumu "
 ### Politika notları
 - **USDT (TRC20) bağış:** İsteğe bağlı bağış linki/adresi serbest. Yasak olanlar: kullanıcının cihazında
   kripto madencilik yapmak ve bağışı bir özelliğin kilidini açma şartına bağlamak. Bu eklenti ikisini de yapmıyor.
-- **İsim:** "YouTube" kelimesi isimde ilk sırada olmamalı ve YouTube logosu kullanılmamalı. Bu yüzden isim
-  "Auto Scroll for YouTube Shorts" ve ikon kendi tasarımımız.
+- **İsim:** Marka adları (YouTube, Instagram, TikTok) isimde ilk sırada olmamalı ve logoları kullanılmamalı. Bu yüzden isim
+  "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok" ve ikon kendi tasarımımız.
+- **v1.1 izin uyarısı:** v1.1 yeni siteler eklediği için Chrome mevcut kullanıcılara "yeni izin" onayı sorar ve
+  onaylanana kadar eklentiyi devre dışı bırakır. Yeni site eklemek her seferinde bunu tetikler.
 - **Uzak kod yasak:** MV3 uzaktan JS çalıştırmaya izin vermez. `remote-config.json` sadece CSS seçici listesi
   içerir ve arka planda filtrelenir, bu yüzden kurallara uygun.
