@@ -1,0 +1,67 @@
+name: Chrome Web Store status
+
+# Opens an issue (GitHub e-mails you) when the manifest version goes live or a submission is rejected.
+
+on:
+  schedule:
+    - cron: '30 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  PUBLISHER_ID: 441db824-c69c-4414-bff2-c903f4bca026
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch status
+        id: status
+        env:
+          EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+        run: |
+          token=$(curl -sf https://oauth2.googleapis.com/token \
+            --data-urlencode "client_id=$CLIENT_ID" \
+            --data-urlencode "client_secret=$CLIENT_SECRET" \
+            --data-urlencode "refresh_token=$REFRESH_TOKEN" \
+            -d grant_type=refresh_token | jq -r .access_token)
+          status=$(curl -sf -H "Authorization: Bearer $token" \
+            "https://chromewebstore.googleapis.com/v2/publishers/${PUBLISHER_ID}/items/${EXTENSION_ID}:fetchStatus")
+          echo "$status" | jq 'del(.publicKey)'
+          {
+            echo "published=$(echo "$status" | jq -r '.publishedItemRevisionStatus.distributionChannels[0].crxVersion // ""')"
+            echo "submitted=$(echo "$status" | jq -r '.submittedItemRevisionStatus.distributionChannels[0].crxVersion // ""')"
+            echo "state=$(echo "$status" | jq -r '.submittedItemRevisionStatus.state // ""')"
+            echo "manifest=$(jq -r .version extension/manifest.json)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Open issue on change
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUBLISHED: ${{ steps.status.outputs.published }}
+          SUBMITTED: ${{ steps.status.outputs.submitted }}
+          STATE: ${{ steps.status.outputs.state }}
+          MANIFEST: ${{ steps.status.outputs.manifest }}
+        run: |
+          gh label create store-status --color 1e9e5a --force
+          existing=$(gh issue list --label store-status --state all --limit 200 --json title --jq '.[].title')
+          notify() {
+            grep -Fxq "$1" <<< "$existing" && return
+            gh issue create --label store-status --title "$1" --body "$2"
+          }
+          url="https://chromewebstore.google.com/detail/cdjmnadedkcjiepgplkaikbnegaiemon"
+          if [ "$PUBLISHED" = "$MANIFEST" ]; then
+            notify "✅ v$PUBLISHED Chrome Web Store'da yayında" "İnceleme onaylandı, sürüm kullanıcılara dağıtılıyor: $url"
+          fi
+          if [ "$STATE" = "REJECTED" ]; then
+            notify "❌ v$SUBMITTED Chrome Web Store incelemesinde reddedildi" \
+              "Gerekçe için Developer Dashboard'u ve e-postanı kontrol et: https://chrome.google.com/webstore/devconsole"
+          fi

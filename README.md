@@ -18,6 +18,7 @@ tests/monitor.mjs       ← gerçek YouTube'da uçtan uca test (TikTok/Instagram
 .github/workflows/
   monitor.yml           ← 6 saatte bir test; bozulursa issue açar (GitHub e-posta atar)
   release.yml           ← v* tag'i push'layınca Chrome Web Store'a yükler
+  store-status.yml      ← 6 saatte bir Store durumuna bakar; sürüm yayına girince ya da reddedilince issue açar
 ```
 
 ## Nasıl çalışır
