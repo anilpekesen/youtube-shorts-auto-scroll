@@ -1,0 +1,44 @@
+{
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
+  },
+  "extDescription": {
+    "message": "動画が終わると、YouTube ショート・Instagram リール・TikTok の次の動画へ自動で移動します。無料・トラッキングなし。"
+  },
+  "autoScroll": {
+    "message": "次の動画へ自動スクロール"
+  },
+  "statusOk": {
+    "message": "動作中"
+  },
+  "statusBroken": {
+    "message": "サイトのレイアウトが変わりました — 修正を準備中です"
+  },
+  "statusUnknown": {
+    "message": "動画を開くと開始します"
+  },
+  "donateTitle": {
+    "message": "コーヒーをおごる"
+  },
+  "donateText": {
+    "message": "この拡張機能はずっと無料です。役に立ったら、USDT で寄付していただけると嬉しいです。"
+  },
+  "donateWarning": {
+    "message": "USDT は必ず Tron（TRC20）ネットワークで送金してください。他の通貨やネットワークで送ると取り戻せません。"
+  },
+  "copy": {
+    "message": "コピー"
+  },
+  "copied": {
+    "message": "コピーしました"
+  },
+  "showQr": {
+    "message": "QR コード"
+  },
+  "hideQr": {
+    "message": "QR を隠す"
+  }
+}

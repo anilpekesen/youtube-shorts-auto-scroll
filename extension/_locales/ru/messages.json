@@ -1,0 +1,44 @@
+{
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
+  },
+  "extDescription": {
+    "message": "Сам переключает на следующее видео в YouTube Shorts, Instagram Reels и TikTok, когда текущее заканчивается. Бесплатно, без слежки."
+  },
+  "autoScroll": {
+    "message": "Автопереход к следующему видео"
+  },
+  "statusOk": {
+    "message": "Работает"
+  },
+  "statusBroken": {
+    "message": "Сайт изменил вёрстку — исправление уже в пути"
+  },
+  "statusUnknown": {
+    "message": "Откройте видео, чтобы начать"
+  },
+  "donateTitle": {
+    "message": "Угостите меня кофе"
+  },
+  "donateText": {
+    "message": "Это расширение всегда будет бесплатным. Если оно вам полезно, можно поддержать автора в USDT."
+  },
+  "donateWarning": {
+    "message": "Отправляйте только USDT в сети Tron (TRC20) — другие монеты или сети восстановить нельзя."
+  },
+  "copy": {
+    "message": "Копировать"
+  },
+  "copied": {
+    "message": "Скопировано!"
+  },
+  "showQr": {
+    "message": "QR-код"
+  },
+  "hideQr": {
+    "message": "Скрыть QR"
+  }
+}

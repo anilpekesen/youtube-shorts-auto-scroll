@@ -1,0 +1,44 @@
+{
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
+  },
+  "extDescription": {
+    "message": "Otomatis pindah ke YouTube Short, Instagram Reel, atau TikTok berikutnya saat video selesai. Gratis, tanpa pelacakan."
+  },
+  "autoScroll": {
+    "message": "Otomatis lanjut ke video berikutnya"
+  },
+  "statusOk": {
+    "message": "Berjalan"
+  },
+  "statusBroken": {
+    "message": "Tata letak berubah — perbaikan sedang disiapkan"
+  },
+  "statusUnknown": {
+    "message": "Buka video untuk memulai"
+  },
+  "donateTitle": {
+    "message": "Traktir aku kopi"
+  },
+  "donateText": {
+    "message": "Ekstensi ini gratis selamanya. Kalau bermanfaat, kamu bisa berdonasi dalam USDT."
+  },
+  "donateWarning": {
+    "message": "Kirim hanya USDT di jaringan Tron (TRC20) — koin atau jaringan lain tidak bisa dikembalikan."
+  },
+  "copy": {
+    "message": "Salin"
+  },
+  "copied": {
+    "message": "Disalin!"
+  },
+  "showQr": {
+    "message": "Kode QR"
+  },
+  "hideQr": {
+    "message": "Sembunyikan QR"
+  }
+}

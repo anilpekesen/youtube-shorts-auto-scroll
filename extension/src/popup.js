@@ -1,6 +1,9 @@
 /* global YSS */
 const t = key => chrome.i18n.getMessage(key) || key;
 
+document.documentElement.lang = chrome.i18n.getUILanguage();
+document.documentElement.dir = chrome.i18n.getMessage('@@bidi_dir') || 'ltr';
+
 for (const el of document.querySelectorAll('[data-i18n]')) {
   el.textContent = t(el.dataset.i18n);
 }

@@ -1,0 +1,44 @@
+{
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
+  },
+  "extDescription": {
+    "message": "Springt automatisch zum nächsten YouTube Short, Instagram Reel oder TikTok, wenn das aktuelle endet. Kostenlos, ohne Tracking."
+  },
+  "autoScroll": {
+    "message": "Automatisch zum nächsten Video"
+  },
+  "statusOk": {
+    "message": "Aktiv"
+  },
+  "statusBroken": {
+    "message": "Layout geändert – ein Fix ist unterwegs"
+  },
+  "statusUnknown": {
+    "message": "Öffne ein Video, um zu starten"
+  },
+  "donateTitle": {
+    "message": "Spendier mir einen Kaffee"
+  },
+  "donateText": {
+    "message": "Diese Erweiterung bleibt für immer kostenlos. Wenn sie dir gefällt, kannst du in USDT spenden."
+  },
+  "donateWarning": {
+    "message": "Sende nur USDT im Tron-Netzwerk (TRC20) – andere Coins oder Netzwerke gehen unwiderruflich verloren."
+  },
+  "copy": {
+    "message": "Kopieren"
+  },
+  "copied": {
+    "message": "Kopiert!"
+  },
+  "showQr": {
+    "message": "QR-Code"
+  },
+  "hideQr": {
+    "message": "QR ausblenden"
+  }
+}

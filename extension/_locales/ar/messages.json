@@ -1,0 +1,44 @@
+{
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
+  },
+  "extDescription": {
+    "message": "ينتقل تلقائيًا إلى مقطع YouTube Shorts أو Instagram Reels أو TikTok التالي عند انتهاء المقطع الحالي. مجاني وبدون تتبع."
+  },
+  "autoScroll": {
+    "message": "الانتقال تلقائيًا إلى الفيديو التالي"
+  },
+  "statusOk": {
+    "message": "يعمل"
+  },
+  "statusBroken": {
+    "message": "تغيّر تصميم الموقع — الإصلاح في الطريق"
+  },
+  "statusUnknown": {
+    "message": "افتح فيديو للبدء"
+  },
+  "donateTitle": {
+    "message": "اشترِ لي قهوة"
+  },
+  "donateText": {
+    "message": "هذه الإضافة مجانية للأبد. إذا وجدتها مفيدة، يمكنك التبرع بعملة USDT."
+  },
+  "donateWarning": {
+    "message": "أرسل USDT فقط على شبكة Tron ‏(TRC20) — لا يمكن استرداد العملات أو الشبكات الأخرى."
+  },
+  "copy": {
+    "message": "نسخ"
+  },
+  "copied": {
+    "message": "تم النسخ!"
+  },
+  "showQr": {
+    "message": "رمز QR"
+  },
+  "hideQr": {
+    "message": "إخفاء رمز QR"
+  }
+}

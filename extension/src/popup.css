@@ -72,7 +72,7 @@ p { margin: 0; color: var(--muted); }
   content: '';
   position: absolute;
   top: 3px;
-  left: 3px;
+  inset-inline-start: 3px;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -82,6 +82,7 @@ p { margin: 0; color: var(--muted); }
 }
 .switch:checked { background: var(--accent); }
 .switch:checked::after { transform: translateX(16px); }
+[dir=rtl] .switch:checked::after { transform: translateX(-16px); }
 .switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Per-site rows */

@@ -2,6 +2,7 @@
 import { chromium } from 'playwright';
 import { mkdirSync, readFileSync, readdirSync, unlinkSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { COPY, RTL } from './store-copy.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const extDir = `${root}extension`;
@@ -10,43 +11,6 @@ mkdirSync(outDir, { recursive: true });
 for (const f of readdirSync(outDir)) if (f.endsWith('.png')) unlinkSync(`${outDir}/${f}`);
 
 const icon = `data:image/png;base64,${readFileSync(`${extDir}/icons/icon128.png`).toString('base64')}`;
-
-const COPY = {
-  en: {
-    brand: 'Auto Scroll for YouTube Shorts, Instagram Reels & TikTok',
-    s1Title: 'Short videos that<br>scroll themselves.',
-    s1Text: 'When a video ends, the next one starts. No swiping, no arrow keys.',
-    s1Points: ['YouTube Shorts', 'Instagram Reels', 'TikTok'],
-    ended: 'Video ended',
-    next: 'Next video',
-    s2Title: 'Simple switches.<br>That’s all.',
-    s2Text: 'Turn auto scroll on or off for each site from the toolbar. A status line tells you everything is working.',
-    s3Title: 'Free. Private.<br>Self-healing.',
-    s3Text: 'No ads, no account, no data collection — and it fixes itself when a site changes its layout.',
-    cards: [
-      ['shield', 'No tracking', 'Nothing leaves your browser. No account, no ads, no analytics.'],
-      ['refresh', 'Keeps working', 'When a site changes its layout, fixes arrive automatically.'],
-      ['zap', 'Lightweight', 'Runs only on YouTube, Instagram and TikTok. Tiny, fast and quiet.']
-    ]
-  },
-  tr: {
-    brand: 'Auto Scroll for YouTube Shorts, Instagram Reels & TikTok',
-    s1Title: 'Kendi kendine<br>kayan videolar.',
-    s1Text: 'Video bitince sıradaki başlar. Kaydırmak yok, tuşa basmak yok.',
-    s1Points: ['YouTube Shorts', 'Instagram Reels', 'TikTok'],
-    ended: 'Video bitti',
-    next: 'Sıradaki video',
-    s2Title: 'Basit düğmeler.<br>Hepsi bu.',
-    s2Text: 'Otomatik geçişi her site için araç çubuğundan ayrı ayrı aç ya da kapat. Durum satırı her şeyin çalıştığını gösterir.',
-    s3Title: 'Ücretsiz. Gizli.<br>Kendini onaran.',
-    s3Text: 'Reklam yok, hesap yok, veri toplama yok. Bir site tasarımını değiştirince kendini düzeltir.',
-    cards: [
-      ['shield', 'Takip yok', 'Hiçbir veri tarayıcından çıkmaz. Hesap yok, reklam yok, analiz yok.'],
-      ['refresh', 'Hep çalışır', 'Bir site tasarımını değiştirince düzeltme otomatik gelir.'],
-      ['zap', 'Hafif', 'Sadece YouTube, Instagram ve TikTok’ta çalışır. Küçük, hızlı, sessiz.']
-    ]
-  }
-};
 
 const ICONS = {
   check: '<path d="M20 6 9 17l-5-5"/>',
@@ -59,12 +23,12 @@ const svg = (name, size = 20) =>
   `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg>`;
 
 const BASE_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=block');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+JP:wght@500;700;800&family=Noto+Sans+Devanagari:wght@500;600;700;800&family=Noto+Sans+Arabic:wght@500;600;700;800&display=block');
   * { box-sizing: border-box; }
   html, body { margin: 0; }
   body {
     width: 1280px; height: 800px; overflow: hidden; position: relative;
-    font-family: 'Inter', system-ui, sans-serif; color: #fff;
+    font-family: 'Inter', 'Noto Sans JP', 'Noto Sans Devanagari', 'Noto Sans Arabic', system-ui, sans-serif; color: #fff;
     background:
       radial-gradient(900px 600px at 85% 30%, rgba(124, 92, 255, .45), transparent 60%),
       radial-gradient(700px 500px at 0% 100%, rgba(255, 92, 138, .18), transparent 60%),
@@ -89,10 +53,16 @@ const BASE_CSS = `
   .points li { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; color: rgba(255,255,255,.9); }
   .tick { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
           background: rgba(124, 92, 255, .25); color: #c7b9ff; }
+  /* Right-to-left languages: mirror the layout and drop negative tracking, which breaks Arabic letter joining. */
+  [dir=rtl] .brand { left: auto; right: 96px; }
+  [dir=rtl] .copy { left: auto; right: 96px; }
+  [dir=rtl] .stage, [dir=rtl] .popup-wrap { right: auto; left: 150px; }
+  [dir=rtl] h1, [dir=rtl] .card h2 { letter-spacing: 0; line-height: 1.25; }
+  :lang(ja) h1, :lang(hi) h1 { letter-spacing: -0.01em; line-height: 1.2; }
 `;
 
 // Gradient-clipped text renders a gap before trailing punctuation, so keep it outside <em>.
-const accentTitle = t => t.replace(/<br>(.*?)([.!]?)$/, '<br><em>$1</em><b class="dot">$2</b>');
+const accentTitle = t => t.replace(/<br>(.*?)([.!。।]?)$/, '<br><em>$1</em><b class="dot">$2</b>');
 
 function screen1(c) {
   return `<style>${BASE_CSS}
@@ -214,6 +184,8 @@ await worker.evaluate(ids => chrome.storage.local.set({
   health: Object.fromEntries(ids.map(id => [id, { ok: true, reason: '', at: Date.now() }]))
 }), ['youtube', 'tiktok', 'instagram']);
 
+const htmlLang = lang => lang.replace('_', '-');
+
 async function renderPopup(lang) {
   const page = await context.newPage();
   await page.setViewportSize({ width: 600, height: 700 });
@@ -221,23 +193,25 @@ async function renderPopup(lang) {
   await page.waitForTimeout(400);
   // chrome.i18n follows the OS language on macOS, so apply the target locale's strings directly.
   const messages = JSON.parse(readFileSync(`${extDir}/_locales/${lang}/messages.json`, 'utf8'));
-  await page.evaluate(msgs => {
+  await page.evaluate(([msgs, dir, lang]) => {
+    document.documentElement.dir = dir;
+    document.documentElement.lang = lang;
     for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = msgs[el.dataset.i18n]?.message ?? el.textContent;
     for (const status of document.querySelectorAll('.status')) {
       status.className = 'status ok';
       status.querySelector('span').textContent = msgs.statusOk.message;
     }
     document.body.style.zoom = 1.5; // crisp when shown large
-  }, messages);
+  }, [messages, RTL.has(lang) ? 'rtl' : 'ltr', htmlLang(lang)]);
   const shot = (await page.locator('body').screenshot()).toString('base64');
   await page.close();
   return shot;
 }
 
-async function shoot(html, file, size = { width: 1280, height: 800 }) {
+async function shoot(html, file, lang = 'en', size = { width: 1280, height: 800 }) {
   const page = await context.newPage();
   await page.setViewportSize(size);
-  await page.setContent(html, { waitUntil: 'networkidle' });
+  await page.setContent(`<html lang="${htmlLang(lang)}" dir="${RTL.has(lang) ? 'rtl' : 'ltr'}">${html}</html>`, { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts.ready);
   await page.screenshot({ path: `${outDir}/${file}` });
   await page.close();
@@ -245,11 +219,11 @@ async function shoot(html, file, size = { width: 1280, height: 800 }) {
 
 for (const [lang, c] of Object.entries(COPY)) {
   const popup = await renderPopup(lang);
-  await shoot(screen1(c), `${lang}-1-hero.png`);
-  await shoot(screen2(c, popup), `${lang}-2-popup.png`);
-  await shoot(screen3(c), `${lang}-3-features.png`);
+  await shoot(screen1(c), `${lang}-1-hero.png`, lang);
+  await shoot(screen2(c, popup), `${lang}-2-popup.png`, lang);
+  await shoot(screen3(c), `${lang}-3-features.png`, lang);
 }
-await shoot(promoTile(), 'promo-small-440x280.png', { width: 440, height: 280 });
+await shoot(promoTile(), 'promo-small-440x280.png', 'en', { width: 440, height: 280 });
 
 await context.close();
 console.log(`written to ${outDir}`);

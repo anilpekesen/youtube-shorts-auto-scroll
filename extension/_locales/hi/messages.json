@@ -1,0 +1,44 @@
+{
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
+  },
+  "extDescription": {
+    "message": "मौजूदा वीडियो खत्म होते ही अगले YouTube Short, Instagram Reel या TikTok पर अपने-आप चला जाता है। मुफ़्त, कोई ट्रैकिंग नहीं।"
+  },
+  "autoScroll": {
+    "message": "अगले वीडियो पर अपने-आप जाएँ"
+  },
+  "statusOk": {
+    "message": "चालू है"
+  },
+  "statusBroken": {
+    "message": "साइट का लेआउट बदल गया है — सुधार जल्द आ रहा है"
+  },
+  "statusUnknown": {
+    "message": "शुरू करने के लिए कोई वीडियो खोलें"
+  },
+  "donateTitle": {
+    "message": "मुझे एक कॉफ़ी पिलाएँ"
+  },
+  "donateText": {
+    "message": "यह एक्सटेंशन हमेशा मुफ़्त रहेगा। अगर यह आपके काम आए, तो आप USDT में दान कर सकते हैं।"
+  },
+  "donateWarning": {
+    "message": "केवल Tron (TRC20) नेटवर्क पर USDT भेजें — किसी दूसरे कॉइन या नेटवर्क पर भेजी गई राशि वापस नहीं मिल सकती।"
+  },
+  "copy": {
+    "message": "कॉपी करें"
+  },
+  "copied": {
+    "message": "कॉपी हो गया!"
+  },
+  "showQr": {
+    "message": "QR कोड"
+  },
+  "hideQr": {
+    "message": "QR छिपाएँ"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
+  },
+  "extDescription": {
+    "message": "Tự động chuyển sang YouTube Short, Instagram Reel hoặc TikTok tiếp theo khi video hiện tại kết thúc. Miễn phí, không theo dõi."
+  },
+  "autoScroll": {
+    "message": "Tự động chuyển sang video tiếp theo"
+  },
+  "statusOk": {
+    "message": "Đang hoạt động"
+  },
+  "statusBroken": {
+    "message": "Giao diện trang đã thay đổi — bản sửa sắp có"
+  },
+  "statusUnknown": {
+    "message": "Mở một video để bắt đầu"
+  },
+  "donateTitle": {
+    "message": "Mời mình một ly cà phê"
+  },
+  "donateText": {
+    "message": "Tiện ích này miễn phí mãi mãi. Nếu thấy hữu ích, bạn có thể ủng hộ bằng USDT."
+  },
+  "donateWarning": {
+    "message": "Chỉ gửi USDT trên mạng Tron (TRC20) — coin hoặc mạng khác sẽ không thể khôi phục."
+  },
+  "copy": {
+    "message": "Sao chép"
+  },
+  "copied": {
+    "message": "Đã sao chép!"
+  },
+  "showQr": {
+    "message": "Mã QR"
+  },
+  "hideQr": {
+    "message": "Ẩn mã QR"
+  }
+}

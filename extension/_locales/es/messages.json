@@ -1,0 +1,44 @@
+{
+  "extName": {
+    "message": "Auto Scroll for YouTube Shorts, Instagram Reels & TikTok"
+  },
+  "popupTitle": {
+    "message": "Auto Scroll"
+  },
+  "extDescription": {
+    "message": "Pasa automáticamente al siguiente YouTube Short, Reel de Instagram o TikTok cuando termina el actual. Gratis y sin rastreo."
+  },
+  "autoScroll": {
+    "message": "Pasar automáticamente al siguiente video"
+  },
+  "statusOk": {
+    "message": "Funcionando"
+  },
+  "statusBroken": {
+    "message": "El diseño cambió — ya viene una solución"
+  },
+  "statusUnknown": {
+    "message": "Abre un video para empezar"
+  },
+  "donateTitle": {
+    "message": "Invítame un café"
+  },
+  "donateText": {
+    "message": "Esta extensión es gratis para siempre. Si te resulta útil, puedes donar en USDT."
+  },
+  "donateWarning": {
+    "message": "Envía solo USDT en la red Tron (TRC20): otras monedas o redes no se pueden recuperar."
+  },
+  "copy": {
+    "message": "Copiar"
+  },
+  "copied": {
+    "message": "¡Copiado!"
+  },
+  "showQr": {
+    "message": "Código QR"
+  },
+  "hideQr": {
+    "message": "Ocultar QR"
+  }
+}
