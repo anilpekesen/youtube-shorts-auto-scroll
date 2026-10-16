@@ -3,6 +3,8 @@
   const POLL_MS = 500;
   const ADVANCE_TIMEOUT_MS = 2500;
   const VIDEO_MISSING_MS = 10000;
+  // A single miss is often a one-off (ad, slow network); only repeated misses mean the page layout changed.
+  const FAILURES_BEFORE_REPORT = 2;
 
   const siteId = Object.keys(YSS.SITES).find(id => YSS.SITES[id].hosts.includes(location.hostname));
   if (!siteId) return;
@@ -18,6 +20,8 @@
   let advancing = false;
   let activeSince = 0;
   let lastHealth = null;
+  let lastReason = '';
+  let failures = 0;
 
   chrome.storage.local.get(['settings', 'remoteSites']).then(applyStorage);
   chrome.storage.onChanged.addListener((changes, area) => {
@@ -78,8 +82,9 @@
   }
 
   function report(ok, reason = '') {
-    if (ok === lastHealth) return;
+    if (ok === lastHealth && reason === lastReason) return;
     lastHealth = ok;
+    lastReason = reason;
     try {
       chrome.runtime.sendMessage({ type: 'health', site: siteId, ok, reason }).catch(() => {});
     } catch { /* extension reloaded; this script is orphaned */ }
@@ -179,11 +184,13 @@
       for (const run of strategies) {
         if (!run()) continue;
         if (await waitForMove(from, ADVANCE_TIMEOUT_MS)) {
+          failures = 0;
           report(true);
           return;
         }
       }
-      report(false, 'advance_failed');
+      // Background tabs throttle timers and scrolling, so a miss there says nothing about the layout.
+      if (!document.hidden && ++failures >= FAILURES_BEFORE_REPORT) report(false, 'advance_failed');
     } finally {
       resetTracking();
       advancing = false;
@@ -196,14 +203,18 @@
       activeSince = 0;
       return;
     }
-    if (!activeSince) activeSince = Date.now();
+    // Sites don't build the player in a background tab, so only count time the tab is visible.
+    if (document.hidden) activeSince = 0;
+    else if (!activeSince) activeSince = Date.now();
 
     const v = findVideo();
     if (v !== video) {
       detach();
       if (v) attach(v);
     }
-    if (!v && Date.now() - activeSince > VIDEO_MISSING_MS) {
+    if (v && lastReason === 'video_not_found') {
+      report(true);
+    } else if (!v && activeSince && Date.now() - activeSince > VIDEO_MISSING_MS) {
       report(false, 'video_not_found');
     }
   }, POLL_MS);
